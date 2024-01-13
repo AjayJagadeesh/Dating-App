@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Friendship App</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+<div class="container mt-5">
+    <h1 class="mb-4">Friendship App</h1>
+    <div id="friends-list" class="mb-4"></div>
+    <button onclick="getFriends()" class="btn btn-primary">Get Friends</button>
+</div>
+
+<script>
+    function getFriends() {
+        fetch('/friends')
+            .then(response => response.json())
+            .then(data => {
+                const friendsList = document.getElementById('friends-list');
+                friendsList.innerHTML = '';
+
+                data.friends.forEach(friend => {
+                    const friendCard = document.createElement('div');
+                    friendCard.className = 'card mb-3';
+                    friendCard.innerHTML = `
+                        <div class="card-body">
+                            <h5 class="card-title">${friend.name}</h5>
+                            <p class="card-text">Age: ${friend.age}, Location: ${friend.location}</p>
+                            <p class="card-text">Music Interest: ${friend.music_interest}</p>
+                        </div>
+                    `;
+                    friendsList.appendChild(friendCard);
+                });
+            })
+            .catch(error => console.error('Error:', error));
+    }
+</script>
+
+</body>
+</html>
